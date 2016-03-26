@@ -23,4 +23,11 @@ describe('leanpoker bot', function() {
     var betDone = bot.bet_request(state, betCb);
     expect(betCb.called).to.be.true;
   });
+
+  it('should call our "bet" with "integer"', function() {
+    var betDone = bot.bet_request(state, betCb);
+    var number = sinon.match.number;
+
+    expect(betCb.calledWith(number)).to.be.true;
+  });
 });
