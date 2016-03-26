@@ -1,4 +1,5 @@
 var log = console.log.bind(console);
+var MIN_SUM = 20;
 
 var bot = {
 
@@ -25,14 +26,24 @@ var bot = {
     var bet = 0;
     var min_raise = gs.minimum_raise + 2 * gs.small_blind;
 
-    if (this.isHandPair() || this.isTablePairOrMore()) {
-      if (this.isSet() || this.isFlush()){
-        bet = this.getOurPlayer().stack;
-      } else {
+    if (this.isPreFlop()) {
+      // PRE FLOP
+      if (this.isHandPair()) {
         bet = min_raise * 2;
+      } else if (this.getOurCardSum() > MIN_SUM) {
+        bet = min_raise;
       }
-    } else if (this.getOurCardSum() > 20) {
-      bet = min_raise;
+    } else {
+      // POST FLOP
+      if (this.isHandPair() || this.isTablePairOrMore()) {
+        if (this.isSet() || this.isFlush()){
+          bet = this.getOurPlayer().stack;
+        } else {
+          bet = min_raise * 2;
+        }
+      } else if (this.getOurCardSum() > 20) {
+        bet = min_raise;
+      }
     }
 
     return bet;
@@ -112,6 +123,10 @@ var bot = {
       }
     }
     return false;
+  },
+
+  isPreFlop: function() {
+    return this.GS.community_cards.length === 0;
   },
 
   isFlop: function() {
