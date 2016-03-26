@@ -26,7 +26,7 @@ var bot = {
     var min_raise = gs.minimum_raise + 2 * gs.small_blind;
 
     if (this.isHandPair() || this.isTablePairOrMore()) {
-      if (this.isSet()){
+      if (this.isSet() || this.isFlush()){
         bet = this.getOurPlayer().stack;
       } else {
         bet = min_raise * 2;
@@ -103,9 +103,37 @@ var bot = {
     }
 
   },
-  isFlopHanded: function() {
-    return this.GS.community_cards.length;
+
+  isFlush: function() {
+    var hash = this.getSuitsHash();
+    for (var key in hash) {
+      if (hash[key] === 5) {
+        return true;
+      }
+    }
+    return false;
   },
+
+  isFlop: function() {
+    return this.GS.community_cards.length === 3;
+  },
+
+  getSuitsHash: function() {
+    var table = this.getTableCards();
+    var our = this.getOurCards();
+    var allcards = table.concat(our);
+    var hash = {};
+    var suit;
+
+    for (var i = 0; i < allcards.length; i++) {
+      suit = allcards[i].suit;
+
+      hash[suit] = hash[suit] ? hash[suit] + 1  : 1;
+    }
+
+    return hash;
+  },
+
   getCardsHash: function() {
     var table = this.getTableCards();
     var our = this.getOurCards();
