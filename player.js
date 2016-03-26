@@ -24,6 +24,7 @@ var bot = {
 
   getBet: function() {
     var bet = 0;
+    var gs = this.GS;
     var min_raise = gs.minimum_raise + 2 * gs.small_blind;
 
     if (this.isPreFlop()) {
