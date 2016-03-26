@@ -12,8 +12,12 @@ var bot = {
 
     try {
 
-      if (this.isHandPair() || this.isTablePair()) {
-        money = min_raise * 2;
+      if (this.isHandPair() || this.isTablePairOrMore()) {
+        if (this.isSet()){
+          money = this.getOurPlayer().stack;
+        } else {
+          money = min_raise * 2;
+        }
       } else if (this.getOurCardSum() > 20) {
         money = min_raise;
       }
@@ -78,7 +82,27 @@ var bot = {
     return cards[0].rank === cards[1].rank;
   },
 
-  isTablePair: function() {
+  isTablePairOrMore: function() {
+    var hash = this.getCardsHash();
+    for (var key in hash) {
+      if (hash[key] > 1) {
+        return true;
+      }
+    }
+
+    return false;
+  },
+  isSet: function() {
+    var hash = this.getCardsHash();
+    for (var key in hash) {
+      if (hash[key] == 3) {
+        return true;
+      }
+      return false;
+    }
+
+  },
+  getCardsHash: function() {
     var table = this.getTableCards();
     var our = this.getOurCards();
     var allcards = table.concat(our);
@@ -91,13 +115,7 @@ var bot = {
       hash[rank] = hash[rank] ? hash[rank] + 1  : 1;
     }
 
-    for (var key in hash) {
-      if (hash[key] > 1) {
-        return true;
-      }
-    }
-
-    return false;
+    return hash;
   }
 };
 
