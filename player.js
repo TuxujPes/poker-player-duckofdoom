@@ -80,7 +80,21 @@ var bot = {
       ? high[card.rank]
       : +card.rank;
   },
+  getCardsHash: function() {
+    var table = this.getTableCards();
+    var our = this.getOurCards();
+    var allcards = table.concat(our);
+    var hash = {};
+    var rank;
 
+    for (var i = 0; i < allcards.length; i++) {
+      rank = allcards[i].rank;
+
+      hash[rank] = hash[rank] ? hash[rank] + 1  : 1;
+    }
+
+    return hash;
+  },
   isHandPair: function() {
     var cards = this.getOurCards();
 
