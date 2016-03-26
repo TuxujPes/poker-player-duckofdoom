@@ -7,15 +7,15 @@ var bot = {
   bet_request: function(gs, bet) {
     this.GS = gs;
 
-    var bet = 0;
+    var money = 0;
     var min_raise = gs.minimum_raise + 2 * gs.small_blind;
 
     try {
 
       if (this.isPair()) {
-        bet = min_raise * 2;
+        money = min_raise * 2;
       } else if (this.getOurCardSum() > 20) {
-        bet = min_raise;
+        money = min_raise;
       }
 
 
@@ -24,9 +24,9 @@ var bot = {
       log('ERRORe', err);
     }
 
-    log(bet);
+    log(money);
 
-    bet(bet);
+    bet(money);
   },
 
   showdown: function(gs) {
