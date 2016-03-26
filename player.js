@@ -2,7 +2,7 @@ var log = console.log.bind(console);
 
 var bot = {
 
-  VERSION: "Default JavaScript folding player",
+  VERSION: "7 is a lucky number!!!",
 
   bet_request: function(gs, bet) {
     this.GS = gs;
