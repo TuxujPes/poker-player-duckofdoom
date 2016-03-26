@@ -102,6 +102,9 @@ var bot = {
     }
 
   },
+  isFlopHanded: function() {
+    return this.GS.community_cards.length;
+  },
   getCardsHash: function() {
     var table = this.getTableCards();
     var our = this.getOurCards();
