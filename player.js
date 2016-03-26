@@ -8,11 +8,17 @@ var bot = {
     this.GS = gs;
 
     var bet = 0;
+    var min_raise = gs.minimum_raise + 2 * gs.small_blind;
 
     try {
-      if (this.getOurCardSum() > 20) {
-        bet = gs.minimum_raise + 2 * gs.small_blind;
+
+      if (this.isPair()) {
+        bet = min_raise * 2;
+      } else if (this.getOurCardSum() > 20) {
+        bet = min_raise;
       }
+
+
     }
     catch(err) {
       log('ERRORe', err);
@@ -60,6 +66,12 @@ var bot = {
     return card.rank in high
       ? high[card.rank]
       : +card.rank;
+  },
+
+  isPair: function() {
+    var cards = this.getOurCards();
+
+    return cards[0].rank === cards[1].rank;
   }
 };
 
