@@ -18,6 +18,8 @@ var bot = {
     makeBet(makeBet);
   },
 
+  high_card_value: 11,
+
   showdown: function(gs) {
 
   },
@@ -104,6 +106,33 @@ var bot = {
     }
 
     return false;
+  },
+  isPairWorthPlaying: function() {
+    var hash = this.gerCardsHash(),
+        pairedCards = [],
+        countOfStrongerCards = 0;
+    for (var key in hash) {
+      if (hash[key] == 2) {
+        pairedCards.push(this.getCardValue(hash[key]));
+      }
+    }
+    if (pairedCards.length > 1) {
+      //two pairs worth playing
+      return true;
+    }
+    if (pairedCards[0] >= this.high_card_value){
+      //is a high pair
+      return true;
+    } else {
+      for (var key in hash) {
+        if (pairedCards.indexOf(this.getCardValue(key)) == -1) {
+          if (this.getCardValue(key) > pairedCards[0]){
+            countOfStrongerCards++;
+          }
+        }
+      }
+      return !(countOfStrongerCards > 1);
+    }
   },
   isSet: function() {
     var hash = this.getCardsHash();
