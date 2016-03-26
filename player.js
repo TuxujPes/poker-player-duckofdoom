@@ -28,8 +28,9 @@ var bot = {
           } else {
             if (this.isPairWorthPlaying()){
               money = min_raise * 10;
+            } else {
+              money = 0;
             }
-            money = min_raise * 2;
           }
         } else if (this.getOurCardSum() > 20) {
           money = min_raise;
