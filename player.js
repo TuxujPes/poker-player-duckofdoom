@@ -12,19 +12,29 @@ var bot = {
 
     try {
 
-      if (this.isHandPair() || this.isTablePair()) {
-        if (this.isSet()) {
-          money = this.getOurPlayer().stack;
-        } else {
-          if (this.isPairWorthPlaying()){
-            money = min_raise * 10;
-          }
-          money = min_raise * 2;
+      if (this.isPreFlop()) {
+        // PRE FLOP
+        if (this.isHandPair()) {
+            money = min_raise * 2;
+        } else if (this.getOurCardSum() > 20) {
+          money = min_raise;
         }
-      } else if (this.getOurCardSum() > 20) {
-        money = min_raise;
-      }
 
+      } else {
+        // POST FLOP
+        if (this.isHandPair() || this.isTablePair()) {
+          if (this.isSet()) {
+            money = this.getOurPlayer().stack;
+          } else {
+            if (this.isPairWorthPlaying()){
+              money = min_raise * 10;
+            }
+            money = min_raise * 2;
+          }
+        } else if (this.getOurCardSum() > 20) {
+          money = min_raise;
+        }
+      }
 
     }
     catch(err) {
@@ -95,6 +105,15 @@ var bot = {
 
     return hash;
   },
+
+  isPreFlop: function() {
+    return this.GS.community_cards.length === 0;
+  },
+
+  isFlop: function() {
+    return this.GS.community_cards.length === 3;
+  },
+
   isHandPair: function() {
     var cards = this.getOurCards();
 
@@ -159,6 +178,10 @@ var bot = {
       return !(countOfStrongerCards > 1);
     }
   },
+
+  isKickerWorthPlaying: function() {
+    //
+  }
 };
 
 module.exports = bot;
