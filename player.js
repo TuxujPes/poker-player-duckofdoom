@@ -133,7 +133,7 @@ var bot = {
 
   },
   isPairWorthPlaying: function() {
-    var hash = this.gerCardsHash(),
+    var hash = this.getCardsHash(),
         pairedCards = [],
         countOfStrongerCards = 0;
     for (var key in hash) {
