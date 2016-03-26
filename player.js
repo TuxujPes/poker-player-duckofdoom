@@ -1,6 +1,6 @@
 var log = console.log.bind(console);
 
-module.exports = {
+var bot = {
 
   VERSION: "Default JavaScript folding player",
 
@@ -11,11 +11,11 @@ module.exports = {
 
     try {
       if (this.getOurCardSum() > 20) {
-        bet = gs.minimum_raise + 2 * gs.small_blind);
+        bet = gs.minimum_raise + 2 * gs.small_blind;
       }
     }
-    catch {
-      log('ERRORe');
+    catch(err) {
+      log('ERRORe', err);
     }
 
     log(bet);
@@ -62,3 +62,5 @@ module.exports = {
       : +card.rank;
   }
 };
+
+module.exports = bot;
