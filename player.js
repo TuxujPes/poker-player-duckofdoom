@@ -4,37 +4,38 @@ var bot = {
 
   VERSION: "Default JavaScript folding player",
 
-  bet_request: function(gs, bet) {
+  bet_request: function(gs, makeBet) {
     this.GS = gs;
 
-    var money = 0;
-    var min_raise = gs.minimum_raise + 2 * gs.small_blind;
-
     try {
-
-      if (this.isHandPair() || this.isTablePairOrMore()) {
-        if (this.isSet()){
-          money = this.getOurPlayer().stack;
-        } else {
-          money = min_raise * 2;
-        }
-      } else if (this.getOurCardSum() > 20) {
-        money = min_raise;
-      }
-
-
+      bet = this.getBet();
     }
     catch(err) {
       log('ERRORe', err);
     }
 
-    log(money);
-
-    bet(money);
+    makeBet(makeBet);
   },
 
   showdown: function(gs) {
 
+  },
+
+  getBet: function() {
+    var bet = 0;
+    var min_raise = gs.minimum_raise + 2 * gs.small_blind;
+
+    if (this.isHandPair() || this.isTablePairOrMore()) {
+      if (this.isSet()){
+        bet = this.getOurPlayer().stack;
+      } else {
+        bet = min_raise * 2;
+      }
+    } else if (this.getOurCardSum() > 20) {
+      bet = min_raise;
+    }
+
+    return bet;
   },
 
   getOurPlayer: function() {
