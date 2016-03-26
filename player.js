@@ -1,9 +1,10 @@
 var log = console.log.bind(console);
-var MIN_SUM = 20;
 
 var bot = {
 
   VERSION: "Default JavaScript folding player",
+
+  MIN_SUM: 20,
 
   bet_request: function(gs, makeBet) {
     this.GS = gs;
@@ -33,7 +34,7 @@ var bot = {
       // PRE FLOP
       if (this.isHandPair()) {
         bet = min_raise * 2;
-      } else if (this.getOurCardSum() > MIN_SUM) {
+      } else if (this.getOurCardSum() > this.MIN_SUM) {
         bet = min_raise;
       }
     } else {
