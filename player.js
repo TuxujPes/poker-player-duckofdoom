@@ -15,6 +15,9 @@ module.exports = {
         bet = gs.minimum_raise + 2 * gs.small_blind);
       }
     }
+    catch {
+      log('ERRORe');
+    }
 
     log(bet);
 
@@ -35,7 +38,7 @@ module.exports = {
     }
   },
 
-  getOurCards: function(player) {
+  getOurCards: function() {
     return this.getOurPlayer().hole_cards;
   },
 
