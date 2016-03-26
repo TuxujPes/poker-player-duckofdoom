@@ -13,7 +13,14 @@ var bot = {
     try {
 
       if (this.isHandPair() || this.isTablePair()) {
-        money = min_raise * 2;
+        if (this.isSet()) {
+          money = this.getOurPlayer().stack;
+        } else {
+          if (this.isPairWorthPlaying()){
+            money = min_raise * 10;
+          }
+          money = min_raise * 2;
+        }
       } else if (this.getOurCardSum() > 20) {
         money = min_raise;
       }
@@ -32,6 +39,8 @@ var bot = {
   showdown: function(gs) {
 
   },
+
+  high_card_value: 11,
 
   getOurPlayer: function() {
     var players = this.GS.players;
@@ -98,7 +107,44 @@ var bot = {
     }
 
     return false;
-  }
+  },
+  isSet: function() {
+    var hash = this.getCardsHash();
+    for (var key in hash) {
+      if (hash[key] == 3) {
+        return true;
+      }
+      return false;
+    }
+
+  },
+  isPairWorthPlaying: function() {
+    var hash = this.gerCardsHash(),
+        pairedCards = [],
+        countOfStrongerCards = 0;
+    for (var key in hash) {
+      if (hash[key] == 2) {
+        pairedCards.push(this.getCardValue(hash[key]));
+      }
+    }
+    if (pairedCards.length > 1) {
+      //two pairs worth playing
+      return true;
+    }
+    if (pairedCards[0] >= this.high_card_value){
+      //is a high pair
+      return true;
+    } else {
+      for (var key in hash) {
+        if (pairedCards.indexOf(this.getCardValue(key)) == -1) {
+          if (this.getCardValue(key) > pairedCards[0]){
+            countOfStrongerCards++;
+          }
+        }
+      }
+      return !(countOfStrongerCards > 1);
+    }
+  },
 };
 
 module.exports = bot;
