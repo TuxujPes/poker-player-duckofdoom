@@ -16,7 +16,7 @@ var bot = {
         // PRE FLOP
         if (this.isHandPair()) {
             money = min_raise * 2;
-        } else if (this.getOurCardSum() > 20) {
+        } else if (this.isKickerWorthPlaying()) {
           money = min_raise;
         }
 
@@ -27,12 +27,12 @@ var bot = {
             money = this.getOurPlayer().stack;
           } else {
             if (this.isPairWorthPlaying()){
-              money = min_raise * 10;
+              money = min_raise * 5;
             } else {
               money = 0;
             }
           }
-        } else if (this.getOurCardSum() > 20) {
+        } else if (this.isKickerWorthPlaying()) {
           money = min_raise;
         }
       }
@@ -115,6 +115,10 @@ var bot = {
     return this.GS.community_cards.length === 3;
   },
 
+  isRiver: function() {
+    return this.GS.community_cards.length === 4;
+  },
+
   isHandPair: function() {
     var cards = this.getOurCards();
 
@@ -181,7 +185,15 @@ var bot = {
   },
 
   isKickerWorthPlaying: function() {
-    //
+    var worth = false;
+
+    if(this.isRiver()) {
+      worth = this.getOurCardSum() > 25;
+    } else {
+      worth = this.getOurCardSum() > 20;
+    }
+
+    return worth;
   }
 };
 
